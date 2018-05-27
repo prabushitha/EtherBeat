@@ -1,0 +1,26 @@
+#include "block.h"
+#include "rlp.h"
+#include "leveldb/db.h"
+#include <vector>
+
+class Parser {
+
+    leveldb::DB * db;
+    uint8_t headerPrefix[1] = {104}; //h
+    uint8_t numSuffix[1] = {110}; //n
+
+    uint8_t bodyPrefix[1] = {98}; //b
+
+    public:
+        Parser(leveldb::DB *);
+        Block getBlock(uint64_t);
+    private:
+        void updateHeader(Header *header, std::vector<uint8_t> contents, RLP & rlp);
+        void updateBody(Block *block, std::vector<uint8_t> contents, RLP & rlp);
+
+        std::vector<uint8_t> createByteVector(std::vector<uint8_t> contents, const RLP & rlp);
+        std::string createBlockHeaderKey(int blockNumber, std::string blockHash);
+
+        std::string createBlockBodyKey(int blockNumber, std::string blockHash);
+
+};
