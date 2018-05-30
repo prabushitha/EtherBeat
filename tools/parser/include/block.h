@@ -28,7 +28,7 @@ class Transaction {
         std::vector<std::uint8_t> nonce;
     	std::vector<std::uint8_t> gasPrice;
     	std::vector<std::uint8_t> gasLimit;
-    	std::vector<std::uint8_t> to;
+    	std::vector<std::uint8_t> to; // No TO address is getting for contact creation transactions
     	std::vector<std::uint8_t> value; // in wei (1 ETH = 10^18 wei)
     	std::vector<std::uint8_t> v;
     	std::vector<std::uint8_t> r;
@@ -36,6 +36,7 @@ class Transaction {
     	std::vector<std::uint8_t> init; // data
 
     	std::vector<std::uint8_t> from;
+    	std::vector<std::uint8_t> hash;
 
     	void print();
     	std::vector<std::uint8_t> recoverTxSender();
@@ -43,8 +44,8 @@ class Transaction {
 
 // Block
 class Block {
-    Header header;
     public:
+        Header header;
         std::vector<uint8_t> hash;
         std::vector<Transaction> transactions;
         std::vector<std::vector<uint8_t>> ommerHashes;
