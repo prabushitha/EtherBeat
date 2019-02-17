@@ -1,23 +1,22 @@
-import {applyMiddleware, createStore} from "redux";
-import {createLogger} from 'redux-logger';
+import {applyMiddleware, createStore, compose} from "redux";
+import thunk from 'redux-thunk';
+import Reducer from '../reducers';
 
-//1. create middleware
-const middleware = applyMiddleware(createLogger());
 
-//2. create reducer OR reducers(using combineReducers)
-const initialState = {
-    toggled:false
-};
-const reducer =  (state=initialState, action)=>{
-    switch (action.type){
-        case 'TOGGLE':
-            return {toggled:!state.toggled};
-        default:
-            return state;
-    }
-};
+/* ---DEV ENVIRONMENT  */
+const composeEnhancers =
+    typeof window === 'object' &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      }) : compose;
+const enhancer = composeEnhancers(applyMiddleware(thunk));
+const store = createStore(Reducer, enhancer);
+/* ---FINISH DEV ENVIRONMENT --- */
 
-//3. create store
-const store = createStore(reducer,middleware);
+/* ---PROD ENVIRONMENT  */
+/*const middleware = applyMiddleware(thunk);
+const store = createStore(Reducer, middleware);*/
+/* ---FINISH PROD ENVIRONMENT  */
+
 
 export default store;
